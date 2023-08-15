@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+
+</head>
+<style>
+    body {
+        background-color: black;
+    }
+
+    .cardh-100 {
+        border-radius: 3px;
+        border: 1px solid black;
+        display: flex;
+
+        overflow: hidden; /* Agregamos overflow para manejar la descripción general */
+        position: relative; /* Agregamos position para manejar la descripción general */
+    }
+
+    .cardh-100:hover {
+        transform: scale(1.2);
+        z-index: 1; /* Mantenemos la tarjeta en primer plano cuando el mouse está sobre ella */
+    }
+
+    .card-overlay {
+        position: absolute;
+        top: 10;
+        left: 10;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0; /* Inicialmente oculta */
+        transition: opacity 0.3s ease-in-out; /* Agregamos transición */
+    }
+
+    .cardh-100:hover .card-overlay {
+        opacity: 1; /* Mostramos la descripción general cuando el mouse está sobre la tarjeta */
+    }
+
+    .lol {
+        max-width: 200px;
+        max-height: 150px;
+        display: flex;
+        flex-direction: row;
+        
+    }
+
+    .gordo {
+        display: flex;
+    }
+</style>
+
+<body>
+    <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand">Navbar</a>
+            <form class="d-flex" role="search">
+
+            </form>
+        </div>
+    </nav>
+
+
+    <script>
+
+        $(document).ready(function () {
+            content = "<div class='row row-cols-1 row-cols-md-3 g-4'>"
+            var baseurl = "https://api.themoviedb.org/3/discover/movie?api_key=05d13d35528453ab84aeca199e022b4e"
+            var apikey = "05d13d35528453ab84aeca199e022b4e"
+
+
+                $.ajax({
+                    url: baseurl ,
+                    type: 'GET',
+                    dataType: 'json',
+                    async: false,
+                    success: function (data) {
+                      for (var i = 1; i < data.results.length; i++) {
+                        var movieId = i;
+        
+                        content += "<div class='col'>";
+                        content += "<div class='cardh-100'>";
+                        content += "<img src='https://image.tmdb.org/t/p/w500" + data.results[i].backdrop_path + "' class='card-img-top'>"
+                        content += "<div class='card-overlay'>" + data.results[i].overview + "</div>"; // Agregamos la descripción general
+                        content += "</div>"
+                        content += "</div>"
+                        }
+                    }
+                });
+            
+
+            content += "</div>";
+            $("#content").html(content);
+            $("#cargando").hide();
+        });
+    </script>
+
+
+    <style>
+        .col {
+            display: flex;
+            flex-direction: column;
+            margin: 20px;
+        }
+    </style>
+    <div id="cargando"></div>
+    <div id="content"></div>
+</body>
+
+</html>
+
+
+<!-- <div class="col">
+    <div class="card h-100">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      </div>
+      <div class="card-footer">
+        <small class="text-body-secondary">Last updated 3 mins ago</small>
+      </div>
+    </div>
+  </div> -->

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const tiendas = [ //array
+      { //objeto
+        "nombre": "Tienda 1",
+        "productos": [//array
+          {//objeto
+            "id": 1,
+            "tipo": "Camisa",
+            "nombre": "Camisa",
+            "precio": 20,
+            "variantes": [//array
+              { "color": "Rojo", "stock": 10 },
+              { "color": "Azul", "stock": 15 },
+              { "color": "Verde", "stock": 5 }
+            ]
+          },
+          {
+            "id": 2,
+            "tipo": "Pantalón",
+            "nombre": "Pantalón",
+            "precio": 30,
+            "variantes": [
+              { "color": "Negro", "stock": 20 },
+              { "color": "Gris", "stock": 10 }
+            ]
+          }
+        ]
+      },
+      {
+        "nombre": "Tienda 2",
+        "productos": [
+          {
+            "id": 1,
+            "tipo": "Camisa",
+            "nombre": "Camisa",
+            "precio": 25,
+            "variantes": [
+              { "color": "Rojo", "stock": 5 },
+              { "color": "Azul", "stock": 20 },
+              { "color": "Verde", "stock": 8 }
+            ]
+          },
+          {
+            "id": 2,
+            "tipo": "Pantalón",
+            "nombre": "Pantalón",
+            "precio": 35,
+            "variantes": [
+              { "color": "Negro", "stock": 15 },
+              { "color": "Gris", "stock": 12 }
+            ]
+          }
+        ]
+      }
+    ];
+    valorinventario = 0;
+    tiendasarray = [];
+    stockmayora10 = 10;
+    productoquenotienemasde10= 0
+    for (var i = 0; i < tiendas.length; i++) {
+      console.log(tiendas[i].nombre);
+      var preciomayor = tiendas[0].productos[0].precio;
+     promedioprecios = 0
+     cantidaddeproductos = 0
+     preciostotal = 0
+      for (var j = 0; j < tiendas[i].productos.length; j++) {
+        console.log("precio", j + 1, tiendas[i].productos[j].precio);
+        tiendasarray.push(tiendas[i].productos[j].nombre);
+        cantidaddeproductos = j+1;
+        preciostotal+= tiendas[i].productos[j].precio;
+        for (var q = 0; q < tiendas[i].productos[j].variantes.length; q++) {
+          valorinventario += tiendas[i].productos[j].precio * tiendas[i].productos[j].variantes[q].stock;
+          if(stockmayora10>tiendas[i].productos[j].variantes[q].stock){
+            productoquenotienemasde10 = tiendas[i].productos[j].variantes[q], tiendas[i].productos[j].nombre;
+            console.log("no hay mas de 10:", productoquenotienemasde10);
+          }
+        }
+        if (tiendas[i].productos[j].precio > preciomayor) {
+          preciomayor = tiendas[i].productos[j].precio;
+        }
+
+      }
+      console.log("el promedio es de",preciostotal/cantidaddeproductos)
+      console.log("precio mayor es", preciomayor);
+    
+      console.log("el valor total del stock de la tienda es de:", valorinventario)
+    }
+console.log(tiendasarray);
+
+  </script>
+</body>
+
+</html>

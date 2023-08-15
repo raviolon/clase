@@ -1,0 +1,23 @@
+body {
+    background-image: url(../imágenes/auto.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+p {
+    background-color: aquamarine;
+}
+
+.bxl-twitter {
+   font-size: 100px;
+   color: #FFFF;
+}
+.bxl-instagram{
+    font-size: 100px;
+    color: #FFFF;
+}
+.bxl-linkedin{
+    font-size: 100px;
+    color: #FFFF;
+}

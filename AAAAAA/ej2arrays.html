@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    const tienda = {
+      "nombre": "Mi Tienda",
+      "productos": [
+        {
+          "id": 1,
+          "tipo": "Camisa",
+          "nombre": "Camisa",
+          "precio": 20,
+          "variantes": [
+            { "color": "Rojo", "stock": 10 },
+            { "color": "Azul", "stock": 15 },
+            { "color": "Verde", "stock": 5 }
+          ]
+        },
+        {
+          "id": 2,
+          "tipo": "Pantalón",
+          "nombre": "Pantalón",
+          "precio": 30,
+          "variantes": [
+            { "color": "Negro", "stock": 20 },
+            { "color": "Gris", "stock": 10 }
+          ]
+        }
+      ]
+    };
+
+
+    console.log("nombre de tienda", tienda.nombre);
+
+    console.log("camisa 2 stock:", tienda.productos[0].variantes[1].stock);
+
+    console.log("cantidad de productos:", tienda.productos.length);
+
+    console.log("camisa azul stock", tienda.productos[0].variantes[1].stock);
+
+    for (i = 0; i < tienda.productos.length; i++) {
+
+      console.log("producto", "tipo:", tienda.productos[i].tipo, ", ", "precio", tienda.productos[i].precio)
+
+    }
+    for (i = 0; i < tienda.productos.length; i++) {
+
+      console.log("producto", "nombre:", tienda.productos[i].nombre, ", ", "variantes:", tienda.productos[i].variantes)
+
+    }
+    stock = 0;
+    for (i = 0; i < tienda.productos.length; i++) {
+      for (x = 0; x < tienda.productos[i].variantes.length;x++){
+     stock+= tienda.productos[i].variantes[x]['stock'];
+   
+      }
+    }
+    console.log("el stock total es de:",stock);
+preciomayor = 0 
+    for(i = 0; i < tienda.productos.length; i++) {
+      if(tienda.productos[i].precio>tienda.productos[i+1].precio){
+        preciomayor += tienda.productos[i].precio;
+      }
+      else {
+        preciomayor += tienda.productos[i+1].precio;
+      }break;
+    }
+    console.log("el precio mayor es de:",preciomayor);
+  </script>
+</body>
+
+</html>

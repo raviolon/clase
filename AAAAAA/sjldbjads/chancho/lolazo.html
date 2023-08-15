@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Shade&family=Creepster&family=Press+Start+2P&family=Rubik+Wet+Paint&display=swap" rel="stylesheet">
+    
+    <title>el pelicudown</title>
+</head>
+<body>
+    <nav class="barra">  <h1 class="titulo">El Peliculas</h1>
+        <select class="sele" id="generoSelect">
+        </select>
+
+       </nav>
+       
+    <div id="peliculas" class="peliculas-container"></div>
+
+    <script>
+        async function cargarGeneros() {
+            const response = await fetch("https://api.themoviedb.org/3/genre/movie/list?api_key=fb21426162fffca74c06651aaded57f0");
+            const data = await response.json();
+            const generoSelect = document.getElementById("generoSelect");
+
+            data.genres.forEach(genero => {
+                const option = document.createElement("option");
+                option.value = genero.id;
+                option.innerText = genero.name;
+                generoSelect.appendChild(option);
+            });
+
+            // Preseleccionar las opciones "Aventura" y "Acción"
+            generoSelect.value = ["28", "12"];
+
+            // Cargar películas al cargar la página
+            mostrarPeliculas();
+        }
+
+        async function mostrarPeliculas() {
+            const generoSelect = document.getElementById("generoSelect");
+            const peliculasContainer = document.getElementById("peliculas");
+            const seleccionado = generoSelect.value;
+
+            const response = await fetch(`https://api.themoviedb.org/3/discover/movie?api_key=fb21426162fffca74c06651aaded57f0&with_genres=${seleccionado}`);
+            const data = await response.json();
+
+            peliculasContainer.innerHTML = "";
+            let row = document.createElement("div");
+            row.className = "peliculas-row";
+
+            data.results.forEach(pelicula => {
+                const peliculaElement = document.createElement("div");
+                peliculaElement.className = "pelicula";
+
+                const imagenElement = document.createElement("img");
+                imagenElement.src = `https://image.tmdb.org/t/p/w300${pelicula.poster_path}`;
+                imagenElement.alt = `${pelicula.title} Poster`;
+                imagenElement.title = pelicula.title; // Mostrar título al pasar el mouse
+                imagenElement.dataset.descripcion = pelicula.overview; // Almacenar descripción
+
+                const descripcionElement = document.createElement("div");
+                descripcionElement.className = "info-pelicula";
+                descripcionElement.innerText = pelicula.overview;
+                descripcionElement.style.display = "none"; // Inicialmente oculto
+
+                peliculaElement.appendChild(imagenElement);
+                peliculaElement.appendChild(descripcionElement);
+                initPeliculaEvents(peliculaElement);
+
+                row.appendChild(peliculaElement);
+
+                if (row.children.length === 4) {
+                    peliculasContainer.appendChild(row);
+                    row = document.createElement("div");
+                    row.className = "peliculas-row";
+                }
+            });
+            if (row.children.length > 0) {
+                peliculasContainer.appendChild(row);
+            }
+        }
+
+        function initPeliculaEvents(peliculaElement) {
+            peliculaElement.addEventListener("mouseenter", () => mostrarInfoPelicula(peliculaElement));
+            peliculaElement.addEventListener("mouseleave", () => ocultarInfoPelicula(peliculaElement));
+        }
+
+        function mostrarInfoPelicula(element) {
+            const descripcionElement = element.querySelector(".info-pelicula");
+            descripcionElement.style.display = "block";
+        }
+
+        function ocultarInfoPelicula(element) {
+            const descripcionElement = element.querySelector(".info-pelicula");
+            descripcionElement.style.display = "none";
+        }
+
+        const generoSelect = document.getElementById("generoSelect");
+        generoSelect.addEventListener("change", mostrarPeliculas);
+
+        cargarGeneros();
+    </script>
+
+    <style>
+        .titulo{
+            margin-left: 45%;
+            margin-top: 20px;
+            font-size: 30px;
+            font-family: '';
+        }
+        .barra{
+            width: 98%;
+            position: fixed; 
+            top: 0; 
+            background-color: rgb(83, 83, 83);
+            padding: 10px 10px;
+            z-index: 999;
+            border: 2px #dddddd;
+        }
+        .sele{
+            margin-left: 30%;
+            margin-top: -60px;
+            border: solid black 2px;
+            width: 150px;
+            height: 30px;
+            background-color: gray;
+            color: lightblue;
+            position: absolute;
+        }
+        .peliculas-container {
+            display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 120px; /* Aumentar el margen superior */
+    }
+.aud{
+    position: absolute;
+    width: 250px;
+    margin-top: -80px;
+    margin-left: 85%;
+}
+
+body{
+    background-color: rgb(0, 0, 0) ;
+
+}
+
+        .peliculas-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .pelicula {
+            position: relative;
+        }
+
+        .pelicula img {
+            
+            max-width: 100%;
+            height: auto;
+            transition: filter 0.3s ease-in-out;
+        }
+
+        .pelicula:hover img {
+            filter: blur(5px);
+        }
+
+        .info-pelicula {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 430px;
+            background-color: rgba(0, 0, 0, 0.7); /* Fondo semitransparente para el texto */
+            color: white;
+            padding: 10px;
+            opacity: 0; /* Comienza oculto */
+            transition: opacity 0.3s ease; /* Transición de opacidad */
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .pelicula:hover .info-pelicula {
+            opacity: 1;
+        }
+    </style>
+</body>
+</html>
